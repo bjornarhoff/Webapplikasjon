@@ -1,6 +1,16 @@
 /* Provide sufficient contrast against white background */
+
 a {
   color: #0366d6;
+}
+html {
+    font-family: Big Caslon,Book Antiqua,Palatino Linotype,Georgia,serif;
+}
+body {
+    background-color: whitesmoke;
+}
+ul {
+    list-style-type: none;
 }
 
 code {

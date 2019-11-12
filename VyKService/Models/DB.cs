@@ -13,5 +13,7 @@ namespace VyKService.Models
 
         public DbSet<QA> QA { get; set; }
 
+        public DbSet<newQ> newQ { get; set; }
+
     }
 }

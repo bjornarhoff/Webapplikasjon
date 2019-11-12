@@ -1,26 +1,54 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
+import { Votes } from './Votes';
+
 
 export class Home extends Component {
-  static displayName = Home.name;
+    static displayName = Home.name;
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+        };
+   
+    }
 
-  render () {
-    return (
-      <div>
-        <h1>Hello, world!</h1>
-        <p>Welcome to your new single-page application, built with:</p>
-        <ul>
-          <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-          <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-          <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-        </ul>
-        <p>To help you get started, we have also set up:</p>
-        <ul>
-          <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-          <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-          <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-        </ul>
-        <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-      </div>
-    );
-  }
+    componentDidMount() {
+        fetch("api/QAs")
+            .then(response => response.json())
+            .then(responseJson => {
+                this.setState({ data: responseJson });
+            })
+            .catch(error => {
+                console.error(error)
+            });
+
+    }
+
+    render() {
+        return (
+            <div className="container-fluid">
+                <div className="row">
+                    <h1 className="text-center mx-auto mb-5 mt-2 w-90 ">Frequently Asked Questions</h1>
+                    <div className="row">
+                        {this.state.data.map((obj, i) => {
+                            return (
+                                <div key={i} className="col-md-6 mb-3">
+                                    <div id={obj.id} className="h-100 card text-white bg-dark border-info text-center mx-auto view overlay">
+                                        <div className="card-body">
+                                            <p className="card-title lead text-info border-info"><strong>{obj.question}</strong></p>
+                                            <p className="align-middle font-weight-light text-white">{obj.answer}</p>
+                                        </div>
+                                        <div className="card-footer mb-1 form-group font-italic border-info">
+                                            <Votes votes={obj.votes} voteId={obj.id} />
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
 }
